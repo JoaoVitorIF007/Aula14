@@ -1,0 +1,73 @@
+import java.util.Deque;
+import java.util.Scanner;
+import java.util.ArrayDeque;
+
+public class Main {
+    
+    public static void main(String[] args) {
+        Deque<Carros> parking = new ArrayDeque<>();
+        Deque<Carros> waitlist = new ArrayDeque<>();
+
+        Scanner scanner = new Scanner(System.in);
+        char estado;
+        char lista;
+        char finalizado;
+        int quadro = 0;
+        Carros carro;
+        while (true) {
+            System.out.println("Seja bem vindo ao Estacionamento");
+            System.out.print("'C' para chegada ou 'F' para finalizar: ");
+
+            estado = scanner.next().charAt(0);
+
+            if (estado == 'C' || estado == 'c') {
+                if (parking.size() == 10) {
+                    System.out.println("Carro em espera");
+                   waitlist.addFirst(new Carros(estado, quadro));
+                    System.out.println("Carro em espera:" + waitlist.size());
+                } else {
+                    System.out.print("placa: ");
+                    quadro = scanner.nextInt();
+                    parking.addFirst(new Carros(estado, quadro));
+                    
+                }
+            } else if (estado == 'P' || estado == 'p') {
+                System.out.print("license plate: ");
+                
+                int x;
+                quadro = scanner.nextInt(); // 1
+                while ((carro = parking.removeLast()).quadro != quadro) {
+                    
+                    parking.addFirst(carro);
+                    Carros.incrementMovement();
+                }
+                Carros.incrementMovement();
+                System.out.println("Vehicle removed, total movements::" + Carros.movimentos);
+                if (!waitlist.isEmpty()) {
+
+                    System.out.println("waiting list vacancy available ");
+                    System.out.print("'C' FOR ARRIVAL!------------||OR||-------- 'P' FOR DEPARTURE: ");
+                    lista = scanner.next().charAt(0);
+                    if (lista == 'C') {
+                        parking.addFirst(waitlist.removeLast());
+                    } else {
+                        waitlist.removeFirst();
+                    }
+                }
+                
+            } else {
+                System.out.println("Opção invalida! tente novamente");
+
+            }
+            System.out.println("Carros");
+
+            System.out.print("'T' para finalizar!");
+
+            finalizado = scanner.next().charAt(0);
+            if(finalizado =='F'){
+                break;
+            }
+        }
+        scanner.close();
+    }    
+}
