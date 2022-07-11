@@ -1,0 +1,15 @@
+public class Carros {
+    char estado;
+    int quadro;
+    static int movimentos;
+
+    public static void incrementMovement() {
+        movimentos = movimentos +1;
+    }
+
+    public Carros(char estado, int quadro) {
+        this.estado = estado;
+        this.quadro = quadro;
+
+    }
+}
